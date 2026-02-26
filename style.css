@@ -17,8 +17,8 @@
   --blue:     #183bf5;
   --gradient: linear-gradient(135deg, var(--red) 0%, var(--blue) 100%);
 
-  --card-bg:  rgb(13, 13, 14);
-  --border:   rgba(255, 255, 255, 0.07);
+  --card-bg:  rgba(255, 255, 255, 0.07);
+  --border:   rgba(255, 255, 255, 0.12);
 
   --text:       #ffffff;
   --text-muted: rgba(255, 255, 255, 0.65);
@@ -240,6 +240,8 @@ body::before {
   padding: 0 18px;
   height: 58px;
   background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   text-decoration: none;
