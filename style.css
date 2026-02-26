@@ -1,0 +1,418 @@
+/* ── Animated CSS custom property for avatar ring ─────────── */
+@property --ring-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 135deg;
+}
+
+/* ── Reset & Variables ──────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red:      #dd4f51;
+  --blue:     #183bf5;
+  --gradient: linear-gradient(135deg, var(--red) 0%, var(--blue) 100%);
+
+  --card-bg:  rgb(13, 13, 14);
+  --border:   rgba(255, 255, 255, 0.07);
+
+  --text:       #ffffff;
+  --text-muted: #606060;
+
+  --radius: 14px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ── Body ───────────────────────────────────────────────────── */
+body {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0%, #1b1b1d 0%, #000000 65%);
+  font-family: var(--font);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Subtle dot grid texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Background Orbs ────────────────────────────────────────── */
+.bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+/* Red orb — top left */
+.orb-1 {
+  width: 520px;
+  height: 520px;
+  background: rgba(221, 79, 81, 0.38);
+  top: -160px;
+  left: -160px;
+  animation: drift1 26s ease-in-out infinite;
+}
+
+/* Blue orb — bottom right */
+.orb-2 {
+  width: 620px;
+  height: 620px;
+  background: rgba(24, 59, 245, 0.32);
+  bottom: -220px;
+  right: -180px;
+  animation: drift2 32s ease-in-out infinite;
+}
+
+/* Purple accent orb — center offset */
+.orb-3 {
+  width: 360px;
+  height: 360px;
+  background: rgba(140, 40, 220, 0.2);
+  top: 38%;
+  left: 58%;
+  animation: drift3 21s ease-in-out infinite;
+}
+
+@keyframes drift1 {
+  0%,  100% { transform: translate(0,     0)    scale(1.0); }
+  25%        { transform: translate(110px, 130px) scale(1.14); }
+  55%        { transform: translate(50px,  210px) scale(0.9);  }
+  78%        { transform: translate(180px,  70px) scale(1.07); }
+}
+
+@keyframes drift2 {
+  0%,  100% { transform: translate(0,      0)     scale(1.0); }
+  30%        { transform: translate(-130px, -110px) scale(1.12); }
+  62%        { transform: translate(-55px,  -190px) scale(0.87); }
+  82%        { transform: translate(-170px,  -50px) scale(1.06); }
+}
+
+@keyframes drift3 {
+  0%,  100% { transform: translate(0,    0)   scale(1.0);  }
+  38%        { transform: translate(-90px, 75px) scale(1.22); }
+  72%        { transform: translate(60px, -55px) scale(0.82); }
+}
+
+/* ── Mouse Spotlight ────────────────────────────────────────── */
+.spotlight {
+  position: fixed;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.038) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+/* ── Page Container ─────────────────────────────────────────── */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+/* ── Profile Section ────────────────────────────────────────── */
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.avatar-wrap {
+  position: relative;
+  margin-bottom: 8px;
+  cursor: pointer;
+  /* Spring scale on hover */
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.avatar-wrap:hover {
+  transform: scale(1.07);
+}
+
+/* Ambient glow blob behind avatar */
+.avatar-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: conic-gradient(from var(--ring-angle), var(--red), var(--blue) 50%, var(--red));
+  filter: blur(30px);
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease, filter 0.45s ease;
+}
+
+.avatar-wrap:hover .avatar-glow {
+  opacity: 0.6;
+  filter: blur(40px);
+  animation: spin-gradient 3s linear infinite;
+}
+
+/* Gradient ring — conic so it spins on hover */
+.avatar-ring {
+  position: relative;
+  z-index: 1;
+  padding: 3px;
+  border-radius: 50%;
+  background: conic-gradient(from var(--ring-angle), var(--red), var(--blue) 50%, var(--red));
+  display: inline-block;
+}
+
+.avatar-wrap:hover .avatar-ring {
+  animation: spin-gradient 2.5s linear infinite;
+}
+
+.avatar {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  background: #111;
+}
+
+/* Counter-spin the image so it stays upright while ring spins */
+.avatar-wrap:hover .avatar {
+  animation: counter-spin 2.5s linear infinite;
+}
+
+@keyframes spin-gradient {
+  from { --ring-angle: 0deg; }
+  to   { --ring-angle: 360deg; }
+}
+
+@keyframes counter-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+.name {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.bio {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  letter-spacing: 0.015em;
+}
+
+/* ── Links ──────────────────────────────────────────────────── */
+.links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Link Card ──────────────────────────────────────────────── */
+.link-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  height: 58px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  cursor: pointer;
+  /* Swell on hover */
+  transition:
+    transform 0.28s cubic-bezier(0.34, 1.36, 0.64, 1),
+    border-color 0.25s ease,
+    box-shadow 0.28s ease;
+
+  /* Staggered entrance */
+  opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.link-card:nth-child(1) { animation-delay: 0.18s; }
+.link-card:nth-child(2) { animation-delay: 0.26s; }
+.link-card:nth-child(3) { animation-delay: 0.34s; }
+.link-card:nth-child(4) { animation-delay: 0.42s; }
+.link-card:nth-child(5) { animation-delay: 0.50s; }
+
+/* ── Cursor-tracking gradient border (CSS mask technique) ───── */
+.link-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    220px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(221, 79, 81, 0.95) 0%,
+    rgba(24, 59, 245, 0.65) 45%,
+    transparent 72%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.32s ease;
+}
+
+/* ── Cursor-tracking inner surface glow ─────────────────────── */
+.link-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    160px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(221, 79, 81, 0.09) 0%,
+    transparent 75%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.32s ease;
+}
+
+.link-card:hover {
+  transform: translateY(-3px) scale(1.018);
+  border-color: transparent;
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.link-card:hover::before,
+.link-card:hover::after {
+  opacity: 1;
+}
+
+.link-card:active {
+  transform: translateY(0) scale(1);
+  transition-duration: 0.1s;
+}
+
+/* ── Link Icon ──────────────────────────────────────────────── */
+.link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.25s ease;
+}
+
+.link-icon svg { width: 20px; height: 20px; }
+
+.link-card:hover .link-icon { color: #ffffff; }
+
+/* ── Link Label ─────────────────────────────────────────────── */
+.link-label {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-align: center;
+  padding-right: 22px; /* visually centers against icon */
+}
+
+/* ── Link Arrow ─────────────────────────────────────────────── */
+.link-arrow {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.22);
+  flex-shrink: 0;
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.link-arrow svg { width: 15px; height: 15px; }
+
+.link-card:hover .link-arrow {
+  transform: translateX(4px);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Entrance animation ─────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .profile, .link-card, .orb, .avatar-ring, .avatar-glow {
+    animation: none !important;
+  }
+  .profile, .link-card { opacity: 1; }
+  .avatar-glow { opacity: 0.28; }
+  .link-card { transition: transform 0.15s ease, border-color 0.15s ease; }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  body { padding: 40px 16px; }
+  .name { font-size: 1.5rem; }
+  .avatar { width: 100px; height: 100px; }
+  .orb-1 { width: 340px; height: 340px; }
+  .orb-2 { width: 400px; height: 400px; }
+  .orb-3 { display: none; }
+}
