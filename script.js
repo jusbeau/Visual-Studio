@@ -26,7 +26,7 @@ document.addEventListener('mousemove', e => {
 })();
 
 // ── 2. Hover sound effect ────────────────────────────────────
-const hoverSound = new Audio('Sound/bubble_sound.mp3');
+const hoverSound = new Audio('Sound/Bubble_Sound.mp3');
 
 cards.forEach(card => {
   card.addEventListener('mouseenter', () => {
