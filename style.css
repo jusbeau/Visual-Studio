@@ -385,6 +385,17 @@ body::before {
   .link-card { transition: transform 0.15s ease, border-color 0.15s ease; }
 }
 
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px 0 8px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.04em;
+}
+
 /* ── Mobile ─────────────────────────────────────────────────── */
 @media (max-width: 480px) {
   body { padding: 40px 16px; }
