@@ -166,12 +166,11 @@ body::before {
   position: relative;
   margin-bottom: 8px;
   cursor: pointer;
-  /* Spring scale on hover */
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.35s ease;
 }
 
 .avatar-wrap:hover {
-  transform: scale(1.07);
+  transform: scale(1.04);
 }
 
 /* Ambient glow blob behind avatar */
@@ -179,32 +178,26 @@ body::before {
   position: absolute;
   inset: -20px;
   border-radius: 50%;
-  background: conic-gradient(from var(--ring-angle), var(--red), var(--blue) 50%, var(--red));
+  background: linear-gradient(135deg, var(--red), var(--blue));
   filter: blur(30px);
   opacity: 0.3;
   z-index: 0;
   pointer-events: none;
-  transition: opacity 0.45s ease, filter 0.45s ease;
+  transition: opacity 0.35s ease;
 }
 
 .avatar-wrap:hover .avatar-glow {
-  opacity: 0.6;
-  filter: blur(40px);
-  animation: spin-gradient 3s linear infinite;
+  opacity: 0.5;
 }
 
-/* Gradient ring — conic so it spins on hover */
+/* Gradient ring */
 .avatar-ring {
   position: relative;
   z-index: 1;
   padding: 3px;
   border-radius: 50%;
-  background: conic-gradient(from var(--ring-angle), var(--red), var(--blue) 50%, var(--red));
+  background: linear-gradient(135deg, var(--red), var(--blue));
   display: inline-block;
-}
-
-.avatar-wrap:hover .avatar-ring {
-  animation: spin-gradient 2.5s linear infinite;
 }
 
 .avatar {
@@ -215,21 +208,6 @@ body::before {
   object-fit: cover;
   object-position: center top;
   background: #111;
-}
-
-/* Counter-spin the image so it stays upright while ring spins */
-.avatar-wrap:hover .avatar {
-  animation: counter-spin 2.5s linear infinite;
-}
-
-@keyframes spin-gradient {
-  from { --ring-angle: 0deg; }
-  to   { --ring-angle: 360deg; }
-}
-
-@keyframes counter-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
 }
 
 .name {
