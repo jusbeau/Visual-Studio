@@ -25,7 +25,17 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(tick);
 })();
 
-// ── 2. Per-card cursor tracking (gradient border follows mouse) ─
+// ── 2. Hover sound effect ────────────────────────────────────
+const hoverSound = new Audio('Sound/bubble_sound.mp3');
+
+cards.forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    hoverSound.currentTime = 0;
+    hoverSound.play().catch(() => {});
+  });
+});
+
+// ── 4. Per-card cursor tracking (gradient border follows mouse) ─
 const cards = document.querySelectorAll('.link-card');
 
 cards.forEach(card => {
@@ -42,7 +52,7 @@ cards.forEach(card => {
   });
 });
 
-// ── 3. Click tracking ────────────────────────────────────────
+// ── 5. Click tracking ────────────────────────────────────────
 cards.forEach(card => {
   card.addEventListener('click', () => {
     const platform = card.dataset.platform;
@@ -52,7 +62,7 @@ cards.forEach(card => {
   });
 });
 
-// ── 4. Reduced-motion safety net ─────────────────────────────
+// ── 6. Reduced-motion safety net ─────────────────────────────
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.querySelectorAll('.profile, .link-card').forEach(el => {
     el.style.animation = 'none';
