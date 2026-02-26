@@ -24,16 +24,9 @@ document.addEventListener('mousemove', e => {
 })();
 
 // ── 2. Card interactions ─────────────────────────────────────
-const cards     = document.querySelectorAll('.link-card');
-const hoverSound = new Audio('Sound/Bubble_Sound.mp3');
+const cards = document.querySelectorAll('.link-card');
 
 cards.forEach(card => {
-
-  // Hover sound
-  card.addEventListener('mouseenter', () => {
-    hoverSound.currentTime = 0;
-    hoverSound.play().catch(() => {});
-  });
 
   // Cursor-tracking gradient border
   card.addEventListener('mousemove', e => {
